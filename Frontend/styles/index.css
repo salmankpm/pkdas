@@ -1,0 +1,74 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* ── Rockart Orange Accent System ── */
+  --orange:        #e85d04;
+  --orange-light:  rgba(232, 93, 4, 0.10);
+  --orange-dark:   #c2410c;
+  --orange-glow:   rgba(232, 93, 4, 0.25);
+
+  /* Blue repurposed as secondary warm amber */
+  --blue:          #f97316;
+  --blue-light:    rgba(249, 115, 22, 0.10);
+  --blue-dark:     #ea580c;
+
+  /* Green stays for approved/positive states */
+  --green:         #22c55e;
+  --green-light:   rgba(34, 197, 94, 0.10);
+  --green-dark:    #16a34a;
+
+  /* Purple becomes warm amber for variety */
+  --purple:        #fb923c;
+  --purple-light:  rgba(251, 146, 60, 0.10);
+  --purple-dark:   #f97316;
+
+  /* Red stays */
+  --red:           #ef4444;
+  --red-light:     rgba(239, 68, 68, 0.10);
+  --red-dark:      #dc2626;
+
+  /* ── Dark Theme Layout ── */
+  --sidebar-bg:    #0a0a0a;
+  --sidebar-w:     260px;
+  --topbar-h:      72px;
+  --bg:            #0d0d0d;
+  --card-bg:       #161616;
+  --card-bg-2:     #1c1c1c;
+  --border:        rgba(255, 255, 255, 0.07);
+  --border-hover:  rgba(232, 93, 4, 0.30);
+  --text:          #f0f0f0;
+  --text-muted:    #5a5a5a;
+  --radius:        14px;
+  --radius-sm:     8px;
+  --radius-lg:     20px;
+
+  /* Shadows */
+  --shadow:        0 4px 20px -2px rgba(0, 0, 0, 0.5), 0 2px 8px -1px rgba(0, 0, 0, 0.3);
+  --shadow-md:     0 12px 30px -4px rgba(0, 0, 0, 0.6), 0 4px 12px -2px rgba(0, 0, 0, 0.4);
+  --shadow-lg:     0 20px 40px -6px rgba(0, 0, 0, 0.7), 0 8px 20px -4px rgba(0, 0, 0, 0.5);
+  --shadow-orange: 0 8px 24px rgba(232, 93, 4, 0.30);
+
+  /* Animations */
+  --transition:      all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 0.15s ease;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; font-family: inherit; outline: none; }
+input, select, textarea { font-family: inherit; outline: none; }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(232, 93, 4, 0.25); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(232, 93, 4, 0.45); }
