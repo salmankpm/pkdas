@@ -13,16 +13,6 @@ export default function HomePage() {
       try {
         const res = await api.get("/auth/public-doctors");
         setDoctors(res.data);
-      } catch {
-        // Fallback sample doctors if endpoint not available
-        setDoctors([
-          { _id: "1", name: "Dr. Arjun Mehta", specialty: "Cardiologist" },
-          { _id: "2", name: "Dr. Priya Sharma", specialty: "Neurologist" },
-          { _id: "3", name: "Dr. Ravi Kumar", specialty: "Orthopedic Surgeon" },
-          { _id: "4", name: "Dr. Sana Nair", specialty: "Pediatrician" },
-          { _id: "5", name: "Dr. Vikram Das", specialty: "Dermatologist" },
-          { _id: "6", name: "Dr. Meera Pillai", specialty: "Gynecologist" },
-        ]);
       } finally {
         setLoading(false);
       }
@@ -52,7 +42,7 @@ export default function HomePage() {
           <span className="brand-name">PK Das Hospital</span>
         </div>
         <button className="home-nav__login" onClick={() => navigate("/login")}>
-          Staff Login
+           Login
         </button>
       </nav>
 
@@ -61,7 +51,7 @@ export default function HomePage() {
         <div className="hero-glow hero-glow--1" />
         <div className="hero-glow hero-glow--2" />
         <div className="hero-content">
-          <p className="hero-eyebrow">Compassionate · Cutting-edge · Committed</p>
+          
           <h1 className="hero-title">
             Your health,<br />
             <span className="hero-title--accent">our priority.</span>
@@ -155,7 +145,7 @@ export default function HomePage() {
             </p>
           </div>
           <button className="btn-primary btn-primary--large" onClick={() => navigate("/login")}>
-            Go to Staff Login →
+            Go to  Login →
           </button>
         </div>
       </section>
