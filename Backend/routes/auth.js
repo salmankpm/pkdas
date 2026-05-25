@@ -7,6 +7,21 @@ const generateToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
 // ─────────────────────────────────────────────────────────────
+// GET /auth/public-doctors
+// Public — list all doctors for the home page (no auth required)
+// ─────────────────────────────────────────────────────────────
+router.get("/public-doctors", async (req, res) => {
+  try {
+    const doctors = await User.find({ role: "doctor" })
+      .select("name specialty")
+      .sort({ name: 1 });
+    res.json(doctors);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// ─────────────────────────────────────────────────────────────
 // POST /auth/login
 // Public — all roles use this single login endpoint
 // ─────────────────────────────────────────────────────────────

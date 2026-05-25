@@ -1,7 +1,4 @@
-/**
- * Run once to create the first admin account:
- *   node seedAdmin.js
- */
+
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 dotenv.config();

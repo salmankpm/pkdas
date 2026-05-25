@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 
+import HomePage from "./components/shared/HomePage";
 import Login from "./components/shared/Login";
 
 import AdminLayout from "./components/admin/AdminLayout";
@@ -37,21 +38,14 @@ function RequireAuth({ children, allowedRoles }) {
   return children;
 }
 
-/** Root / → send each role straight to their dashboard */
-function RoleRedirect() {
-  const { user } = useAuth();
-  if (!user) return <Navigate to="/login" replace />;
-  return <Navigate to={roleHome[user.role] || "/login"} replace />;
-}
-
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Root redirect */}
-        <Route path="/" element={<RoleRedirect />} />
+        {/* Public home page — base route */}
+        <Route path="/" element={<HomePage />} />
 
-        {/* Login — only page without auth */}
+        {/* Login — staff portal */}
         <Route path="/login" element={<Login />} />
 
         {/* ── Admin only ── */}
@@ -94,8 +88,8 @@ export default function App() {
           <Route path="appointments" element={<ReceptionistAppointments />} />
         </Route>
 
-        {/* Any unknown URL → role redirect (or login) */}
-        <Route path="*" element={<RoleRedirect />} />
+        {/* Any unknown URL → home */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );
