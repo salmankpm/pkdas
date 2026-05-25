@@ -3,16 +3,47 @@ import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import "../../../styles/HomePage.css";
 
+const SERVICES = [
+  "Cardiology",
+  "Anaesthesiology",
+  "Bariatric Surgery",
+  "Blood Bank",
+  "Endocrinology & Diabetology",
+  "Medical Oncology",
+];
+
+const DOCTOR_IMAGES = [
+  "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=300&h=350&fit=crop&crop=face",
+  "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=300&h=350&fit=crop&crop=face",
+  "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=300&h=350&fit=crop&crop=face",
+  "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=300&h=350&fit=crop&crop=face",
+  "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=300&h=350&fit=crop&crop=face",
+  "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=300&h=350&fit=crop&crop=face",
+];
+
 export default function HomePage() {
   const navigate = useNavigate();
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeService, setActiveService] = useState(1);
+  const [service, setService] = useState("Heart Problem");
+  const [date, setDate] = useState("");
+  const [phone, setPhone] = useState("");
 
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
         const res = await api.get("/auth/public-doctors");
         setDoctors(res.data);
+      } catch {
+        setDoctors([
+          { _id: "1", name: "Dr. Arjun Mehta", specialty: "Cardiologist" },
+          { _id: "2", name: "Dr. Priya Sharma", specialty: "Neurologist" },
+          { _id: "3", name: "Dr. Ravi Kumar", specialty: "Orthopedic Surgeon" },
+          { _id: "4", name: "Dr. Sana Nair", specialty: "Pediatrician" },
+          { _id: "5", name: "Dr. Vikram Das", specialty: "Dermatologist" },
+          { _id: "6", name: "Dr. Meera Pillai", specialty: "Gynaecologist" },
+        ]);
       } finally {
         setLoading(false);
       }
@@ -20,143 +51,163 @@ export default function HomePage() {
     fetchDoctors();
   }, []);
 
-  const specialtyIcons = {
-    Cardiologist: "❤️",
-    Neurologist: "🧠",
-    "Orthopedic Surgeon": "🦴",
-    Pediatrician: "👶",
-    Dermatologist: "🩺",
-    Gynecologist: "🌸",
-    General: "⚕️",
-  };
-
-  const getIcon = (specialty) =>
-    specialtyIcons[specialty] || specialtyIcons["General"];
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveService((prev) => (prev + 1) % SERVICES.length);
+    }, 2000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
-    <div className="home-page">
+    <div className="hp">
       {/* ── NAV ── */}
-      <nav className="home-nav">
-        <div className="home-nav__brand">
-          <span className="brand-cross">✚</span>
-          <span className="brand-name">PK Das Hospital</span>
+      <nav className="hp-nav">
+        <div className="hp-nav__brand">
+          <span className="hp-nav__logo">Dr.</span>
+          <ul className="hp-nav__links">
+            <li className="active">Home</li>
+            <li>About us</li>
+            <li>Contact us</li>
+            <li>Services</li>
+          </ul>
         </div>
-        <button className="home-nav__login" onClick={() => navigate("/login")}>
-           Login
+        <button className="hp-btn hp-btn--outline" onClick={() => navigate("/login")}>
+          Book Appointment
         </button>
       </nav>
 
       {/* ── HERO ── */}
-      <header className="home-hero">
-        <div className="hero-glow hero-glow--1" />
-        <div className="hero-glow hero-glow--2" />
-        <div className="hero-content">
-          
-          <h1 className="hero-title">
-            Your health,<br />
-            <span className="hero-title--accent">our priority.</span>
+      <section className="hp-hero">
+        <div className="hp-hero__overlay" />
+        <div className="hp-hero__content">
+          <h1 className="hp-hero__title">
+            A Great Place care<br />for yourself
           </h1>
-          <p className="hero-desc">
-            PK Das Hospital has been serving the community since 1995. Our 500-bed
-            facility is home to over 50 specialist doctors and a dedicated team of
-            1,000+ healthcare professionals.
+          <p className="hp-hero__sub">
+            Medical recover is most focused in helping you discover your most beautiful smile
           </p>
-          <div className="hero-actions">
-            <button
-              className="btn-primary"
-              onClick={() => navigate("/login")}
+          <button className="hp-btn hp-btn--outline-white" onClick={() => navigate("/login")}>
+            Book Appointment
+          </button>
+        </div>
+
+        {/* Doctor photos strip */}
+        <div className="hp-hero__doctors">
+          <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=500&h=500&fit=crop&crop=face" alt="Doctor" />
+          <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=500&h=520&fit=crop&crop=face" alt="Doctor" className="center" />
+          <img src="https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=500&h=500&fit=crop&crop=face" alt="Doctor" />
+        </div>
+
+        {/* Booking bar */}
+        <div className="hp-booking-bar">
+          <div className="hp-booking-bar__field">
+            <label>Choose Services</label>
+            <select value={service} onChange={e => setService(e.target.value)}>
+              {SERVICES.map(s => <option key={s}>{s}</option>)}
+            </select>
+          </div>
+          <div className="hp-booking-bar__divider" />
+          <div className="hp-booking-bar__field">
+            <label>Choose Date</label>
+            <input type="date" value={date} onChange={e => setDate(e.target.value)} placeholder="DD/MM/YYYY" />
+          </div>
+          <div className="hp-booking-bar__divider" />
+          <div className="hp-booking-bar__field">
+            <label>Contact Number</label>
+            <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+91 968 727 9122" />
+          </div>
+          <button className="hp-btn hp-btn--teal" onClick={() => navigate("/login")}>
+            Book Appointment
+          </button>
+        </div>
+      </section>
+
+      {/* ── SERVICES ── */}
+      <section className="hp-services">
+        <div className="hp-services__left">
+          <h2>See what we provide to<br />keep you healthy</h2>
+          <p>
+            With World-class Preventive, Prescriptive & Curative Medical Practices
+            Sterling has been at the helm of Nurturing Healthy Living Since the Turn of the New Century.
+          </p>
+        </div>
+        <div className="hp-services__list">
+          {SERVICES.map((s, i) => (
+            <div
+              key={s}
+              className={`hp-services__item ${i === activeService ? "active" : ""}`}
+              onClick={() => setActiveService(i)}
             >
-              Login to Portal
-            </button>
-            <a href="#doctors" className="btn-ghost">
-              Meet Our Doctors ↓
-            </a>
-          </div>
+              {s}
+              {i === activeService && <span className="hp-services__bar" />}
+            </div>
+          ))}
         </div>
+      </section>
 
-        <div className="hero-stats">
-          <div className="stat-card">
-            <span className="stat-number">500+</span>
-            <span className="stat-label">Beds</span>
-          </div>
-          <div className="stat-card">
-            <span className="stat-number">50+</span>
-            <span className="stat-label">Specialists</span>
-          </div>
-          <div className="stat-card">
-            <span className="stat-number">30yr</span>
-            <span className="stat-label">Experience</span>
-          </div>
-          <div className="stat-card">
-            <span className="stat-number">24/7</span>
-            <span className="stat-label">Emergency</span>
-          </div>
+      {/* ── STATS ── */}
+      <section className="hp-stats">
+        <div className="hp-stats__circle">
+          <span className="hp-stats__num">67+</span>
+          <span className="hp-stats__label">Qualified Doctors</span>
+          <p>Medical experts present in our clinic</p>
         </div>
-      </header>
-
-      {/* ── DOCTORS ── */}
-      <section className="doctors-section" id="doctors">
-        <div className="doctors-section__header">
-          <h2 className="section-title">Our Specialist Doctors</h2>
-          <p className="section-sub">
-            World-class specialists dedicated to your care
-          </p>
+        <div className="hp-stats__circle">
+          <span className="hp-stats__num">99%</span>
+          <span className="hp-stats__label">Recover Patients</span>
+          <p>You & your life is more important to us for growth</p>
         </div>
+        <div className="hp-stats__circle">
+          <span className="hp-stats__num">98%</span>
+          <span className="hp-stats__label">Satisfaction Rate</span>
+          <p>More than 10,000+ satisfy by our team</p>
+        </div>
+      </section>
 
+      {/* ── DOCTORS GRID ── */}
+      <section className="hp-doctors" id="doctors">
+        <div className="hp-doctors__header">
+          <h2>Meet Our Specialist Doctors</h2>
+          <p>World-class specialists dedicated to your care</p>
+        </div>
         {loading ? (
-          <div className="doctors-loading">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="doctor-skeleton" />
-            ))}
+          <div className="hp-doctors__grid">
+            {[...Array(6)].map((_, i) => <div key={i} className="hp-doc-skeleton" />)}
           </div>
         ) : (
-          <div className="doctors-grid">
+          <div className="hp-doctors__grid">
             {doctors.map((doc, i) => (
-              <div
-                key={doc._id}
-                className="doctor-card"
-                style={{ animationDelay: `${i * 0.07}s` }}
-              >
-                <div className="doctor-card__avatar">
-                  <span className="doctor-card__icon">
-                    {getIcon(doc.specialty)}
-                  </span>
+              <div key={doc._id} className="hp-doc-card" style={{ animationDelay: `${i * 0.07}s` }}>
+                <div className="hp-doc-card__img-wrap">
+                  <img src={DOCTOR_IMAGES[i % DOCTOR_IMAGES.length]} alt={doc.name} />
+                  <div className="hp-doc-card__overlay">
+                    <button className="hp-btn hp-btn--teal-sm" onClick={() => navigate("/login")}>
+                      Book Now
+                    </button>
+                  </div>
                 </div>
-                <div className="doctor-card__info">
-                  <h3 className="doctor-card__name">{doc.name}</h3>
-                  <span className="doctor-card__specialty">
-                    {doc.specialty || "General Physician"}
-                  </span>
+                <div className="hp-doc-card__info">
+                  <h3>{doc.name}</h3>
+                  <span>{doc.specialty || "General Physician"}</span>
+                  <div className="hp-doc-card__badge">● Available</div>
                 </div>
-                <div className="doctor-card__badge">Available</div>
               </div>
             ))}
           </div>
         )}
       </section>
 
-      {/* ── CTA BANNER ── */}
-      <section className="cta-banner">
-        <div className="cta-banner__inner">
-          <div>
-            <h2 className="cta-title">Are you a staff member?</h2>
-            <p className="cta-sub">
-              Access patient records, appointments, and management tools.
-            </p>
-          </div>
-          <button className="btn-primary btn-primary--large" onClick={() => navigate("/login")}>
-            Go to  Login →
+      {/* ── FOOTER CTA ── */}
+      <section className="hp-footer-cta">
+        <div className="hp-footer-cta__bg" />
+        <div className="hp-footer-cta__content">
+          <span className="hp-footer-cta__logo">Dr.</span>
+          <p>Check out for more</p>
+          <button className="hp-btn hp-btn--outline-white" onClick={() => navigate("/login")}>
+            Staff Login →
           </button>
         </div>
       </section>
-
-      {/* ── FOOTER ── */}
-      <footer className="home-footer">
-        <span className="brand-cross">✚</span>
-        <span>PK Das Hospital © {new Date().getFullYear()}</span>
-        <span className="footer-sep">·</span>
-        <span>Serving since 1995</span>
-      </footer>
     </div>
   );
 }
