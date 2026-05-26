@@ -13,10 +13,10 @@ const SERVICES = [
 ];
 
 const DOCTOR_IMAGES = [
-  "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=300&h=350&fit=crop&crop=face",
   "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=300&h=350&fit=crop&crop=face",
-  "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=300&h=350&fit=crop&crop=face",
+  "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=300&h=350&fit=crop&crop=face",
   "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=300&h=350&fit=crop&crop=face",
+  "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=300&h=350&fit=crop&crop=face",
   "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=300&h=350&fit=crop&crop=face",
   "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=300&h=350&fit=crop&crop=face",
 ];
@@ -35,15 +35,7 @@ export default function HomePage() {
       try {
         const res = await api.get("/auth/public-doctors");
         setDoctors(res.data);
-      } catch {
-        setDoctors([
-          { _id: "1", name: "Dr. Arjun Mehta", specialty: "Cardiologist" },
-          { _id: "2", name: "Dr. Priya Sharma", specialty: "Neurologist" },
-          { _id: "3", name: "Dr. Ravi Kumar", specialty: "Orthopedic Surgeon" },
-          { _id: "4", name: "Dr. Sana Nair", specialty: "Pediatrician" },
-          { _id: "5", name: "Dr. Vikram Das", specialty: "Dermatologist" },
-          { _id: "6", name: "Dr. Meera Pillai", specialty: "Gynaecologist" },
-        ]);
+      
       } finally {
         setLoading(false);
       }
@@ -63,7 +55,7 @@ export default function HomePage() {
       {/* ── NAV ── */}
       <nav className="hp-nav">
         <div className="hp-nav__brand">
-          <span className="hp-nav__logo">Dr.</span>
+          <span className="hp-nav__logo">PK DAS</span>
           <ul className="hp-nav__links">
             <li className="active">Home</li>
             <li>About us</li>
@@ -72,7 +64,7 @@ export default function HomePage() {
           </ul>
         </div>
         <button className="hp-btn hp-btn--outline" onClick={() => navigate("/login")}>
-          Book Appointment
+          Login
         </button>
       </nav>
 
@@ -148,7 +140,7 @@ export default function HomePage() {
       {/* ── STATS ── */}
       <section className="hp-stats">
         <div className="hp-stats__circle">
-          <span className="hp-stats__num">67+</span>
+          <span className="hp-stats__num">50+</span>
           <span className="hp-stats__label">Qualified Doctors</span>
           <p>Medical experts present in our clinic</p>
         </div>
@@ -201,7 +193,7 @@ export default function HomePage() {
       <section className="hp-footer-cta">
         <div className="hp-footer-cta__bg" />
         <div className="hp-footer-cta__content">
-          <span className="hp-footer-cta__logo">Dr.</span>
+          <span className="hp-footer-cta__logo">PK DAS</span>
           <p>Check out for more</p>
           <button className="hp-btn hp-btn--outline-white" onClick={() => navigate("/login")}>
             Staff Login →

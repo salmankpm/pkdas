@@ -109,6 +109,7 @@
 }
 .hp-nav__links {
   display: flex;
+  margin-left: 100px;
   list-style: none;
   gap: 32px;
 }
