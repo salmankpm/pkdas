@@ -20,3 +20,6 @@
 .section-title.purple { color: #0891b2; border-bottom-color: rgba(8,145,178,0.18); }
 
 @media (max-width: 1024px) { .staff-sections { grid-template-columns: 1fr; gap: 32px; } }
+
+/* Staff sections now use cards-grid inside */
+.staff-section .empty-state { max-width: 400px; }

@@ -3,13 +3,14 @@ import api from "../../services/api";
 import "../../../styles/Pages.css";
 
 const empty = { name: "", age: "", gender: "" };
+const GENDER_ICONS = { Male: "👨", Female: "👩", Other: "🧑" };
 
 export default function AdminPatients() {
   const [patients, setPatients] = useState([]);
-  const [form, setForm] = useState(empty);
-  const [editId, setEditId] = useState(null);
+  const [form, setForm]         = useState(empty);
+  const [editId, setEditId]     = useState(null);
   const [showForm, setShowForm] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading]   = useState(false);
 
   const fetch = () => api.get("/patients").then((r) => setPatients(r.data));
   useEffect(() => { fetch(); }, []);
@@ -17,17 +18,16 @@ export default function AdminPatients() {
   const handleSubmit = async (e) => {
     e.preventDefault(); setLoading(true);
     try {
-      editId ? await api.put(`/patients/update/${editId}`, form) : await api.post("/patients/add", form);
+      editId
+        ? await api.put(`/patients/update/${editId}`, form)
+        : await api.post("/patients/add", form);
       setForm(empty); setEditId(null); setShowForm(false); fetch();
     } finally { setLoading(false); }
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm("Delete patient?")) { await api.delete(`/patients/delete/${id}`); fetch(); }
-  };
-
-  const handleEdit = (p) => { setForm({ name: p.name, age: p.age, gender: p.gender }); setEditId(p._id); setShowForm(true); };
-  const handleCancel = () => { setForm(empty); setEditId(null); setShowForm(false); };
+  const handleDelete  = async (id) => { if (window.confirm("Delete patient?")) { await api.delete(`/patients/delete/${id}`); fetch(); } };
+  const handleEdit    = (p) => { setForm({ name: p.name, age: p.age, gender: p.gender }); setEditId(p._id); setShowForm(true); };
+  const handleCancel  = () => { setForm(empty); setEditId(null); setShowForm(false); };
 
   return (
     <div className="page">
@@ -67,27 +67,37 @@ export default function AdminPatients() {
         </div>
       )}
 
-      <div className="records-list">
-        {patients.length === 0
-          ? <div className="empty-state"><span>👤</span><p>No patients found.</p></div>
-          : patients.map((p) => (
-            <div key={p._id} className="record-card">
-              <div className="card-avatar blue">{p.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)}</div>
-              <div className="card-info">
-                <h3>{p.name}</h3>
-                <div className="card-meta">
-                  <span className="meta-tag">Age: {p.age}</span>
-                  <span className="meta-tag">{p.gender}</span>
+      {patients.length === 0 ? (
+        <div className="empty-state"><span>👤</span><p>No patients found.</p></div>
+      ) : (
+        <div className="cards-grid">
+          {patients.map((p, i) => {
+            const initials = p.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
+            const icon = GENDER_ICONS[p.gender] || "🧑";
+            return (
+              <div key={p._id} className="data-card" style={{ animationDelay: `${i * 0.04}s` }}>
+                <div className="data-card__header data-card__header--blue">
+                  <div className="data-card__avatar">{initials}</div>
+                  <div className="data-card__badge-row">
+                    <span className="data-card__tag">{icon} {p.gender}</span>
+                  </div>
+                </div>
+                <div className="data-card__body">
+                  <h3 className="data-card__name">{p.name}</h3>
+                  <div className="data-card__meta">
+                    <span className="data-card__meta-item">🎂 Age {p.age}</span>
+                    <span className="data-card__meta-item">🆔 Patient</span>
+                  </div>
+                </div>
+                <div className="data-card__footer">
+                  <button className="data-card__btn data-card__btn--edit" onClick={() => handleEdit(p)}>✏️ Edit</button>
+                  <button className="data-card__btn data-card__btn--delete" onClick={() => handleDelete(p._id)}>🗑️ Delete</button>
                 </div>
               </div>
-              <div className="card-actions">
-                <button className="btn-edit" onClick={() => handleEdit(p)}>Edit</button>
-                <button className="btn-delete" onClick={() => handleDelete(p._id)}>Delete</button>
-              </div>
-            </div>
-          ))
-        }
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
